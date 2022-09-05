@@ -1,0 +1,35 @@
+---
+import Card from '@components/Card.astro'
+import ShowCase from '@components/ShowCase.astro'
+import Layout from '@layouts/Layout.astro'
+
+// const response = await fetch(
+//   'https://jsonplaceholder.typicode.com/posts?_limit=10'
+// )
+// const posts = await response.json()
+
+const posts = await Astro.glob('../posts/*.md')
+---
+
+<Layout title='Astro Blog'>
+  <ShowCase heading='Astro Blog' text='Simple Blog build with Astro' />
+  <section class='page-content'>
+    <div class='container'>
+      {
+        posts.map((post) => (
+          <Card>
+            <h2>{post.frontmatter.title}</h2>
+            <div>
+              Written by <strong>{post.frontmatter.author}</strong> on{' '}
+              {new Date(post.frontmatter.date).toLocaleString()}
+            </div>
+            <p>{post.frontmatter.excerpt}</p>
+            <a href={`/posts/${post.frontmatter.slug}`} class='btn'>
+              Read More
+            </a>
+          </Card>
+        ))
+      }
+    </div>
+  </section>
+</Layout>
